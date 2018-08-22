@@ -4,7 +4,8 @@ const router = express.Router();
 const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-
+const keys = require('../../config/keys');
+const passport = require('passport');
 // Load User Model
 const User = require('../../models/User');
 
@@ -77,9 +78,28 @@ router.post('/login', (req, res) => {
             avatar: user.avatar,
           };
           // Sign Token
-          jwt.sign();
+          jwt.sign(
+            payload,
+            keys.secretOrKey,
+            { expiresIn: 3600 },
+            (err, token) => {
+              res.json({
+                success: true,
+                token: `Bearer ${token}`,
+              });
+            },
+          );
         });
     });
 });
+
+// @route   GET api/users/current
+// @desc    Register current user
+// @access  Private
+router.get('/current',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    res.json(req.user);
+  });
 
 module.exports = router;

@@ -6,6 +6,7 @@ const router = express.Router();
 
 // Load Validation
 const validateProfileInput = require('../../validation/profile');
+const validateExperienceInput = require('../../validation/experience');
 // Load Profile Model
 const Profile = require('../../models/Profile');
 // Load User Profile
@@ -148,6 +149,14 @@ router.post('/', passport.authenticate('jwt', { session: false }),
 // @desc    Add experience to profile
 // @access  Private
 router.post('/experience', passport.authenticate('jwt', { session: false }), (req, res) => {
+  const { errors, isValid } = validateExperienceInput(req.body);
+
+  // Check Validation
+  if (!isValid) {
+    // Return any errors with 400 status
+    return res.status(400).json(errors);
+  }
+
   Profile.findOne({ user: req.user.id })
     .then((profile) => {
       const {
@@ -167,7 +176,8 @@ router.post('/experience', passport.authenticate('jwt', { session: false }), (re
       profile.experience.unshift(newExp);
 
       profile.save().then(updatedProfile => res.json(updatedProfile));
-    });
+    })
+    .catch(err => res.status(404).json(err));
 });
 
 module.exports = router;

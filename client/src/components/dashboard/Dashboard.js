@@ -17,14 +17,14 @@ class Dashboard extends Component {
     let dashboardContent;
 
     if (profile === null || loading) {
-      dashboardContent = <Spinner />
+      dashboardContent = <Spinner />;
     } else {
       // CHeck if logged in user has profile data
-      if(Object.keys(profile).length > 0) {
+      if (Object.keys(profile).length > 0) {
         dashboardContent = <h4>DISPLAY PROFILE</h4>
       } else {
         // User is logged in but has no profile
-        dashboardContent= (
+        dashboardContent = (
           <div>
             <p className="lead text-muted">Welcome {user.name}</p>
             <p> You have not yet setup a profile, please add some info</p>
@@ -35,7 +35,7 @@ class Dashboard extends Component {
         )
       }
     }
-  
+ 
     return (
       <div className="Dashboard">
         <div className="container">
@@ -47,7 +47,7 @@ class Dashboard extends Component {
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 
@@ -59,7 +59,7 @@ Dashboard.propTypes = {
 
 const mapStateToProps = state => ({
   profile: state.profile,
-  auth: state.auth
+  auth: state.auth,
 });
 
 export default connect(mapStateToProps, { getCurrentProfile })(Dashboard);

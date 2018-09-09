@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import TextFieldGroup from "../common/TextFieldGroup";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 import InputGroup from "../common/InputGroup";
 import SelectListGroup from "../common/SelectListGroup";
+import { createProfile } from "../../actions/profileActions";
 
 class CreateProfile extends Component {
   constructor(props) {
@@ -31,9 +33,32 @@ class CreateProfile extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors })
+    }
+  }
+
   onSubmit(e) {
     e.preventDefault();
-    console.log("submit");
+
+    const profileData = {
+      handle: this.state.handle,
+      company: this.state.company,
+      website: this.state.website,
+      location: this.state.location,
+      status: this.state.status,
+      skills: this.state.skills,
+      githubusername: this.state.githubusername,
+      bio: this.state.bio,
+      twitter: this.state.twotter,
+      facebook: this.state.facebook,
+      linkedin: this.state.linkedin,
+      youtube: this.state.youtube,
+      instagram: this.state.instagram,
+    }
+
+    this.props.createProfile(profileData, this.props.history);
   }
 
   onChange(e) {
@@ -120,7 +145,7 @@ class CreateProfile extends Component {
                   name="handle"
                   value={this.state.handle}
                   onChange={this.onChange}
-                  errors={errors.handle}
+                  error={errors.handle}
                   info="A unique handle for your profile URL."
                 />
                 <SelectListGroup
@@ -129,7 +154,7 @@ class CreateProfile extends Component {
                   value={this.state.status}
                   onChange={this.onChange}
                   options={options}
-                  errors={errors.status}
+                  error={errors.status}
                   info="Give sus an idea of where you are at in your career."
                 />
                 <TextFieldGroup
@@ -137,7 +162,7 @@ class CreateProfile extends Component {
                   name="company"
                   value={this.state.company}
                   onChange={this.onChange}
-                  errors={errors.company}
+                  error={errors.company}
                   info="Could be your own company or the one you work for."
                 />
                 <TextFieldGroup
@@ -145,7 +170,7 @@ class CreateProfile extends Component {
                   name="website"
                   value={this.state.website}
                   onChange={this.onChange}
-                  errors={errors.website}
+                  error={errors.website}
                   info="Could be your own website or a company one."
                 />
                 <TextFieldGroup
@@ -153,7 +178,7 @@ class CreateProfile extends Component {
                   name="location"
                   value={this.state.location}
                   onChange={this.onChange}
-                  errors={errors.location}
+                  error={errors.location}
                   info="City and state suggested (eg. Atlanta, GA)"
                 />
                 <TextFieldGroup
@@ -161,23 +186,15 @@ class CreateProfile extends Component {
                   name="skills"
                   value={this.state.skills}
                   onChange={this.onChange}
-                  errors={errors.skills}
+                  error={errors.skills}
                   info="Please use comma seperated values (eg.HTML, CSS, JavaScript, PHP)."
-                />
-                <TextFieldGroup
-                  placeholder="Company"
-                  name="company"
-                  value={this.state.company}
-                  onChange={this.onChange}
-                  errors={errors.company}
-                  info="Could be your own company or the one you work for."
                 />
                 <TextFieldGroup
                   placeholder="Github Username"
                   name="githubusername"
                   value={this.state.githubusername}
                   onChange={this.onChange}
-                  errors={errors.githubusername}
+                  error={errors.githubusername}
                   info="If you want your latest repos and a Github link, include your username."
                 />
                 <TextAreaFieldGroup
@@ -185,16 +202,20 @@ class CreateProfile extends Component {
                   name="bio"
                   value={this.state.bio}
                   onChange={this.onChange}
-                  errors={errors.bio}
+                  error={errors.bio}
                   info="Tell us a little about yourself."
                 />
 
                 <div className="mb-3">
-                  <button onClick={() => {
-                    this.setState(prevState =>({
-                      displaySocialInputs: !prevState.displaySocialInputs
-                    }))
-                  }} className="btn btn-light">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      this.setState(prevState =>({
+                        displaySocialInputs: !prevState.displaySocialInputs
+                      }))
+                    }}
+                    className="btn btn-light"
+                  >
                     Add Social Network
                   </button>
                   <span className="text-muted">Optional</span>
@@ -220,4 +241,4 @@ const mapStateToProps = state => ({
   errors: state.errors
 });
 
-export default connect(mapStateToProps)(CreateProfile);
+export default connect(mapStateToProps, { createProfile })(withRouter(CreateProfile));

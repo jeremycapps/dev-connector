@@ -59,22 +59,23 @@ class Register extends Component {
             <p className="lead text-center">Create your DevConnector account</p>
             <form noValidate onSubmit={this.onSubmit}>
               <TextFieldGroup
-                placeHolder="Name"
+                placeholder="Name"
                 name="name"
                 value={this.state.name}
                 onChange={this.onChange}
                 error={errors.name}
               />
               <TextFieldGroup
-                placeHolder="Email Address"
+                placeholder="Email Address"
                 name="email"
                 type="email"
                 value={this.state.email}
                 onChange={this.onChange}
                 error={errors.email}
+                info="This site uses Gravatar if you want a profie image, use a Gravatar email."
               />
               <TextFieldGroup
-                placeHolder="Password"
+                placeholder="Password"
                 name="password"
                 type="password"
                 value={this.state.password}
@@ -82,7 +83,7 @@ class Register extends Component {
                 error={errors.password}
               />
               <TextFieldGroup
-                placeHolder="Confirm Password"
+                placeholder="Confirm Password"
                 name="password2"
                 type="password"
                 value={this.state.password2}

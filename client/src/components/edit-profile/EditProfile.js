@@ -95,7 +95,7 @@ class CreateProfile extends Component {
       skills: this.state.skills,
       githubusername: this.state.githubusername,
       bio: this.state.bio,
-      twitter: this.state.twotter,
+      twitter: this.state.twitter,
       facebook: this.state.facebook,
       linkedin: this.state.linkedin,
       youtube: this.state.youtube,
@@ -210,7 +210,7 @@ class CreateProfile extends Component {
                   info="Could be your own company or the one you work for."
                 />
                 <TextFieldGroup
-                  placeholder="Website"
+                  placeholder="https://"
                   name="website"
                   value={this.state.website}
                   onChange={this.onChange}
